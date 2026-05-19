@@ -1,5 +1,6 @@
 # Plugin Registry System
 
+## Mermaid.js Diagram
 ```mermaid
 graph TD
     subgraph "Plugin Discovery"
@@ -26,4 +27,26 @@ graph TD
     Ctx -->|register_hook| Hooks
     Ctx -->|register_tool| Registry
     Ctx -->|register_cli_command| Cmds
+```
+
+## ASCII Diagram
+```text
+  PLUGIN DISCOVERY                   LOADER                      REGISTRIES
++--------------------+       +---------------------+       +---------------------+
+| [Bundled Plugins]  |       |                     |       |  [ Hook Registry ]  |
+| [User Plugins]     | ----> |  PluginManager      | ----> |  (pre/post hooks)   |
+| [Pip Entry Points] |       |                     |       |                     |
++--------------------+       +----------+----------+       +---------------------+
+                                        |
+                                        v
+                             +---------------------+       +---------------------+
+                             |  Plugin __init__.py |       |  [ Tool Registry ]  |
+                             |  register(ctx)      | ----> |  (dynamic tools)    |
+                             +----------+----------+       +---------------------+
+                                        |
+                                        v
+                             +---------------------+       +---------------------+
+                             |  PluginContext      |       |  [ CLI Cmd Registry]|
+                             |  (facade/proxy)     | ----> |  (subcommands)      |
+                             +---------------------+       +---------------------+
 ```

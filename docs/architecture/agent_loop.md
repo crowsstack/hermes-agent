@@ -1,5 +1,6 @@
 # Agent Conversation Loop
 
+## Mermaid.js Diagram
 ```mermaid
 sequenceDiagram
     participant U as User / Platform
@@ -34,4 +35,31 @@ sequenceDiagram
 
     A->>M: sync_all(turn_messages)
     A->>U: Final Response
+```
+
+## ASCII Diagram
+```text
+  USER/PLATFORM          AI AGENT          MEM/CONTEXT         LLM PROV        TOOL REG
+        |                   |                   |                 |               |
+        |--- User Msg ----->|                   |                 |               |
+        |                   |--- Prefetch ----->|                 |               |
+        |                   |<-- Context -------|                 |               |
+        |                   |                   |                 |               |
+        |                   |--- Check Limit -->|                 |               |
+        |                   |<-- (Compress?) ---|                 |               |
+        |                   |                   |                 |               |
+        |                   |========= START TOOL LOOP ===========|               |
+        |                   |                   |                 |               |
+        |                   |----- chat/completions (msgs+tools) ---->|           |
+        |                   |<---- response (content OR tools) -------|           |
+        |                   |                   |                 |               |
+        |                   |   [ If Tool Calls ]                 |               |
+        |                   |------------------- dispatch(args) ----------------->|
+        |                   |<------------------ tool_result (JSON) --------------|
+        |                   |                   |                 |               |
+        |                   |========== END TOOL LOOP ============|               |
+        |                   |                   |                 |               |
+        |                   |---- sync_all ---->|                 |               |
+        |<--- Final Resp ---|                   |                 |               |
+        |                   |                   |                 |               |
 ```

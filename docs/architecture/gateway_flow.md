@@ -1,5 +1,6 @@
 # Gateway Message Flow
 
+## Mermaid.js Diagram
 ```mermaid
 sequenceDiagram
     participant P as Platform (Telegram/Discord/etc)
@@ -27,4 +28,29 @@ sequenceDiagram
     A-->>GR: final_response
     GR-->>AD: send(chat_id, response)
     AD-->>P: Outbound Message
+```
+
+## ASCII Diagram
+```text
+  PLATFORM              ADAPTER             GATEWAY RUNNER             AI AGENT
+      |                    |                      |                        |
+      |--- Inbound Msg --->|                      |                        |
+      |                    |--- _handle_message ->|                        |
+      |                    |                      |                        |
+      |                    |             +------------------+              |
+      |                    |             | 1. Auth/Pairing  |              |
+      |                    |             | 2. Slash Cmds    |              |
+      |                    |             | 3. Interrupts    |              |
+      |                    |             +------------------+              |
+      |                    |                      |                        |
+      |                    |                      |--- run_conversation -->|
+      |                    |                      |                        |
+      |                    |             [ Agent Execution Loop ]          |
+      |                    |                      |<-- status/progress ----|
+      |                    |<--- send_typing -----|                        |
+      |                    |                      |                        |
+      |                    |                      |<--- final_response ----|
+      |                    |<--- send(resp) ------|                        |
+      |<--- Outbound Msg --|                      |                        |
+      |                    |                      |                        |
 ```
